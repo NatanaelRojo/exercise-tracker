@@ -3,6 +3,7 @@ import express from 'express';
 import { setupApp } from './config/server/index.js';
 import { User } from './database/models/user.js';
 import { Exercise } from './database/models/exercise.js';
+import { formatUTCStringToCustomDate } from './utilities/datetimeHelpers.js';
 
 const app = express()
 
@@ -48,10 +49,11 @@ app.post('/api/users/:_id/exercises', async (req, res) => {
     user.exercises.push(newExercise._id);
     await user.save();
     const exerciseResponse = {
-      user,
+      _id: user._id,
+      username: user.username,
       description: newExercise.description,
       duration: newExercise.duration,
-      date: newExercise.date.toDateString(),
+      date: formatUTCStringToCustomDate(newExercise.date.toUTCString()),
     }
     res.send(exerciseResponse);
   } catch (error) {
