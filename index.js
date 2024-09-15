@@ -48,11 +48,11 @@ app.post('/api/users/:_id/exercises', async (req, res) => {
     user.exercises.push(newExercise._id);
     await user.save();
     const exerciseResponse = {
-      _id: user._id,
       username: user.username,
       description: newExercise.description,
       duration: newExercise.duration,
       date: newExercise.date.toDateString(),
+      _id,
     }
     res.send(exerciseResponse);
   } catch (error) {
